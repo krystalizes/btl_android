@@ -165,8 +165,6 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
             Toast.makeText(this, "Chưa viết title", Toast.LENGTH_SHORT).show();
         }else if(p.isEmpty() || !p.matches("\\d+")) {
             Toast.makeText(this, "Chưa đúng giá tiền", Toast.LENGTH_SHORT).show();
-        }else if(category.isEmpty()) {
-            Toast.makeText(this, "Chưa chọn category", Toast.LENGTH_SHORT).show();
         }else if(d.isEmpty()) {
             Toast.makeText(this, "Chưa chọn ngày giờ", Toast.LENGTH_SHORT).show();
         }else{

@@ -80,8 +80,6 @@ public class RegisActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else if(!matcher.matches()){
-                        // Password doesn't meet the criteria
-                        // Show error message or handle it as needed
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(RegisActivity.this, "Mật khẩu phải có ít nhất 1 số, 1 chữ thường và 1 chữ hoa",
                                 Toast.LENGTH_SHORT).show();
@@ -101,7 +99,7 @@ public class RegisActivity extends AppCompatActivity {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(RegisActivity.this, "Đăng kí thất bại",
+                                        Toast.makeText(RegisActivity.this, "Email này đã được dùng, vui lòng dùng email khác",
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 }
