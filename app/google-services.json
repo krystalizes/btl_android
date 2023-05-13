@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415799227912",
+    "project_id": "btlandroid-ca39b",
+    "storage_bucket": "btlandroid-ca39b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415799227912:android:17d491bae3e42c2405c3bd",
+        "android_client_info": {
+          "package_name": "com.example.th2android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415799227912-qt21l74rfs5dd80s2cobvqgjr77uo6vp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkrcyLls6IO7OUvfywwidO9LrJ3qs-1GQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415799227912-qt21l74rfs5dd80s2cobvqgjr77uo6vp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
