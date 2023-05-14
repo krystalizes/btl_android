@@ -1,6 +1,7 @@
 package com.example.th2android;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -12,6 +13,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,12 +21,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.th2android.model.Item;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,16 +38,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
 public class UpdateDeleteActivity extends AppCompatActivity implements View.OnClickListener {
     public Spinner sp;
     private EditText eTitle,ePrice,eDate;
+    ImageView img;
+    private final static int galleryPick=1;
+    private StorageReference imgRef;
+    private Uri imageUri;
     private Button btUpdate,btCancel,btRemove;
     private DatabaseReference userRef;
-    private String id="";
+    private String id="",downloadImgUrl;
 
 
 
@@ -63,6 +77,7 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
         btCancel.setOnClickListener(this);
         btRemove.setOnClickListener(this);
         eDate.setOnClickListener(this);
+        img.setOnClickListener(this);
     }
 
     private void displayWork() {
@@ -74,9 +89,11 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
                     String category=snapshot.child("category").getValue().toString();
                     String price=snapshot.child("price").getValue().toString();
                     String date=snapshot.child("date").getValue().toString();
+                    String image=snapshot.child("image").getValue().toString();
                     eTitle.setText(title);
                     ePrice.setText(price);
                     eDate.setText(date);
+                    Picasso.get().load(image).into(img);
                     int p=0;
                     for(int i=0;i<sp.getCount();i++){
                         if(sp.getItemAtPosition(i).toString().equalsIgnoreCase(category)){
@@ -104,6 +121,7 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
         btUpdate=findViewById(R.id.btUpdate);
         btCancel=findViewById(R.id.btCancel);
         btRemove=findViewById(R.id.btRemove);
+        img=findViewById(R.id.img);
         sp.setAdapter(new ArrayAdapter<String>(this,R.layout.item_spinner,getResources().getStringArray(R.array.category)));
     }
 
@@ -132,7 +150,7 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
             finish();
         }
         if(view==btUpdate){
-            editWork();
+            storeWork();
         }
         if(view==btRemove){
             AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
@@ -154,6 +172,64 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
             AlertDialog dialog=builder.create();
             dialog.show();
         }
+        if(view==img){
+            openGallery();
+        }
+    }
+
+    private void openGallery(){
+        Intent intent=new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent,galleryPick);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==galleryPick && resultCode==RESULT_OK && data!=null){
+            imageUri=data.getData();
+            img.setImageURI(imageUri);
+        }
+    }
+
+    private void storeWork() {
+
+        imgRef= FirebaseStorage.getInstance().getReference().child("note image");
+        StorageReference filePath=imgRef.child(
+                imageUri.getLastPathSegment()+" "+id);
+        final UploadTask uploadTask=filePath.putFile(imageUri);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                String message=e.toString();
+                Toast.makeText(UpdateDeleteActivity.this,
+                        "error: "+message, Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(UpdateDeleteActivity.this,
+                        "up ảnh thành công!", Toast.LENGTH_SHORT).show();
+                Task<Uri> uriTask=uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if(!task.isSuccessful()){
+                            throw task.getException();
+                        }
+                        downloadImgUrl=filePath.getDownloadUrl().toString();
+                        return filePath.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        downloadImgUrl=task.getResult().toString();
+                        Toast.makeText(UpdateDeleteActivity.this,
+                                "Lưu Url ảnh thành công!", Toast.LENGTH_SHORT).show();
+                        editWork();
+                    }
+                });
+            }
+        });
     }
 
     private void editWork() {
@@ -174,6 +250,7 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
             item.put("category",category);
             item.put("price",p);
             item.put("date",d);
+            item.put("image",downloadImgUrl);
             userRef.updateChildren(item)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

@@ -12,7 +12,7 @@
         <TextView
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:text="Quan ly chi tieu"
+            android:text="Quản lý chi tiêu"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold"

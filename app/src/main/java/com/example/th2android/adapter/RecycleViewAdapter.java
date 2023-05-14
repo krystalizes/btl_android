@@ -2,9 +2,11 @@ package com.example.th2android.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.th2android.R;
 import com.example.th2android.UpdateDeleteActivity;
 import com.example.th2android.model.Item;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.HomeViewHolder>{
     private List<Item> list;
@@ -54,6 +59,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.category.setText(item.getCategory());
         holder.price.setText(item.getPrice());
         holder.date.setText(item.getDate()+"");
+        Picasso.get().load(item.getImage()).into(holder.img);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +78,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public class HomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView title,category,price,date;
+        private ImageView img;
 
         public HomeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +86,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             category= itemView.findViewById(R.id.tvCategory);
             price= itemView.findViewById(R.id.tvPrice);
             date= itemView.findViewById(R.id.tvDate);
+            img=itemView.findViewById(R.id.img);
             itemView.setOnClickListener(this);
         }
 

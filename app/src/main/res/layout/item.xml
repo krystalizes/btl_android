@@ -8,12 +8,21 @@
     android:background="@color/gray">
     <LinearLayout
         android:orientation="horizontal"
-        android:weightSum="4"
+        android:weightSum="5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_work"
+            android:cropToPadding="false"
+            android:layout_gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
         <LinearLayout
             android:orientation="vertical"
             android:layout_weight="2"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView

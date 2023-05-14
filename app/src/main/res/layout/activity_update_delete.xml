@@ -48,6 +48,14 @@
             android:hint="Select date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/img"
+            android:src="@drawable/baseline_work"
+            android:scaleType="centerCrop"
+            android:cropToPadding="false"
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

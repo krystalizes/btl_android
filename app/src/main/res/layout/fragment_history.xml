@@ -12,7 +12,7 @@
         <TextView
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:text="Danh sach chi tieu"
+            android:text="Danh sách chi tiêu"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -25,6 +25,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="470dp"
         />
 </LinearLayout>

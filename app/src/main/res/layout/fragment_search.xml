@@ -10,20 +10,20 @@
         android:id="@+id/search"
         android:layout_marginTop="10dp"
         app:iconifiedByDefault="false"
-        app:queryHint="Nhap mon chi tieu"
-        android:text="Danh sach chi tieu"
+        app:queryHint="Nhập tên chi tiêu"
+        android:text="Danh sách chi tiêu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <EditText
         android:id="@+id/eFrom"
         android:textSize="12dp"
-        android:hint="Chon tu ngay"
+        android:hint="Chọn từ ngày"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <EditText
         android:id="@+id/eTo"
         android:textSize="12dp"
-        android:hint="Chon den ngay"
+        android:hint="Chọn đến ngày"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
@@ -51,8 +51,7 @@
         android:textSize="15dp"
         android:layout_marginLeft="20dp"
         android:textColor="@color/lavender"
-        android:text="Tong"
-        android:hint="Chon den ngay"
+        android:text="Tổng"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -60,5 +59,5 @@
         android:id="@+id/recycleView"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="370dp"/>
 </LinearLayout>
